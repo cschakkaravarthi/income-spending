@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +7,8 @@ import Footer from './footer';
 
 function Home() {
 
+    const LS_INCOME = 'LS_INCOME_LIST';
+
     const [dataIS, setDataIS] = useState({
         totalBalance: 0.00,
         totalIncome: 0.00,
@@ -14,6 +16,16 @@ function Home() {
         incomeSpendingList: [],
         rowCount: 0
     });
+
+    useEffect(() => {
+        const incomeList = JSON.parse(localStorage.getItem(LS_INCOME));
+        incomeList && setDataIS(incomeList);
+    },[]);
+
+    useEffect(() => {
+        localStorage.setItem(LS_INCOME, JSON.stringify(dataIS));
+    }, [dataIS]);
+
 
     const addIncome = () => {
         const { totalSpending, incomeSpendingList, totalBalance, totalIncome, rowCount } = dataIS;
